@@ -42,8 +42,21 @@ function getResult() {
 
     clearDisplay();
     let result = operate(a, b, operator);
-    a = result;
+    a = null;
     return result;
+}
+
+function checkWhich(isEquals = false) {
+    if (a === null) {
+        a = Number(display.innerText);
+    }
+    else {
+        b = Number(display.innerText);
+    }
+
+    if(!isEquals){
+        needsClear = true;
+    }
 }
 
 let a = null, b = null, operator = null;
@@ -53,19 +66,17 @@ let needsClear = false;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
-    
+
+    if (needsClear) {
+        clearDisplay();
+        needsClear = false;
+    }
+
     let target = event.target;
     switch(target.innerText) {
         case "+":
-            if(a === null) {
-                a = Number(display.innerText);
-            }
-            else {
-                b = Number(display.innerText);
-                populate(getResult());
-            }
+            checkWhich();
             operator = "+";
-            needsClear = true;
             break;
 
         case "-":
@@ -84,6 +95,7 @@ buttons.addEventListener("click", (event) => {
             break;
 
         case "=":
+            checkWhich(true);
             populate(getResult());
             break;
 
@@ -93,10 +105,6 @@ buttons.addEventListener("click", (event) => {
             break;
 
         default:
-            if (needsClear) {
-                clearDisplay();
-                needsClear = false;
-            }
             populate(target.innerText);
             break;
     }
