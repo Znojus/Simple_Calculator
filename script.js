@@ -18,8 +18,6 @@ function populate(text) {
     display.innerText += text;
 }
 
-let a, b, operator = null;
-
 function operate(a, b, oper) {
     return oper === "+" ? add(a, b) :
     oper === "-" ? subtract(a, b) :
@@ -27,19 +25,23 @@ function operate(a, b, oper) {
     divide(a, b);
 }
 
+function clearDisplay() {
+    display.innerText = "";
+}
+
 function getSecond() {
     let displayArr = display.innerText.split(operator);
     return displayArr[1];
 }
 
+let a, b, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
-
+    
     let target = event.target;
-
     switch(target.innerText) {
         case "+":
             a = Number(display.innerText);
@@ -47,9 +49,27 @@ buttons.addEventListener("click", (event) => {
             populate("+");
             break;
 
+        case "-":
+            a = Number(display.innerText);
+            operator = "-";
+            populate("-");
+            break;
+
+        case "/":
+            a = Number(display.innerText);
+            operator = "/";
+            populate("/");
+            break;
+
+        case "*":
+            a = Number(display.innerText);
+            operator = "*";
+            populate("*");
+            break;
+
         case "=":
             b = Number(getSecond());
-            display.innerText = "";
+            clearDisplay();
             populate(operate(a, b, operator));
             break;
 
