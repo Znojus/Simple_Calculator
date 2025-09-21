@@ -39,6 +39,12 @@ function getSecond() {
 }
 
 function getResult() {
+    if (operator === null) {
+        let text = display.innerText;
+        clearDisplay();
+        return Number(text);
+    }
+
     let displayArr = display.innerText.split(operator);
     a = Number(displayArr[0]);
     if (displayArr[1] !== undefined) {
@@ -58,25 +64,21 @@ buttons.addEventListener("click", (event) => {
     let target = event.target;
     switch(target.innerText) {
         case "+":
-            a = Number(display.innerText);
             operator = "+";
             populate("+");
             break;
 
         case "-":
-            a = Number(display.innerText);
             operator = "-";
             populate("-");
             break;
 
         case "/":
-            a = Number(display.innerText);
             operator = "/";
             populate("/");
             break;
 
         case "*":
-            a = Number(display.innerText);
             operator = "*";
             populate("*");
             break;
@@ -87,6 +89,7 @@ buttons.addEventListener("click", (event) => {
 
         case "C":
             clearDisplay();
+            a, b, operator = null;
             break;
 
         default:
