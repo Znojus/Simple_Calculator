@@ -54,6 +54,13 @@ function getResult() {
     return operate(a, b, operator);
 }
 
+function displayHasOperator() {
+    const operatorString = "/*-+";
+    return display.innerText
+        .split('')
+        .find(op => operatorString.includes(op));
+}
+
 let a, b, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
@@ -64,21 +71,37 @@ buttons.addEventListener("click", (event) => {
     let target = event.target;
     switch(target.innerText) {
         case "+":
+            if(displayHasOperator()) {
+                populate(getResult());
+                break;
+            }
             operator = "+";
             populate("+");
             break;
 
         case "-":
+            if (displayHasOperator()) {
+                populate(getResult());
+                break;
+            }
             operator = "-";
             populate("-");
             break;
 
         case "/":
+            if (displayHasOperator()) {
+                populate(getResult());
+                break;
+            }
             operator = "/";
             populate("/");
             break;
 
         case "*":
+            if (displayHasOperator()) {
+                populate(getResult());
+                break;
+            }
             operator = "*";
             populate("*");
             break;
