@@ -29,15 +29,6 @@ function clearDisplay() {
     display.innerText = "";
 }
 
-function getSecond() {
-    let displayArr = display.innerText.split(operator);
-    alert(b);
-    if (displayArr[1] !== 0) {
-        return displayArr[1];
-    }
-    else return b;
-}
-
 function getResult() {
     if (operator === null) {
         let text = display.innerText;
@@ -45,31 +36,20 @@ function getResult() {
         return Number(text);
     }
 
-    let displayArr = display.innerText.split(operator);
-    a = Number(displayArr[0]);
-    if (displayArr[1] !== undefined) {
-        b = Number(displayArr[1]);
+    if (b === null) {
+        b = Number(display.innerText);
     }
+
     clearDisplay();
-    isResult = true;
-    return operate(a, b, operator);
+    let result = operate(a, b, operator);
+    a = result;
+    return result;
 }
 
-function displayHasOperator() {
-    const operatorString = "/*-+";
-    let displayChars = display.innerText.split('');
-
-    if(displayChars[0] === "-" && !isNaN(displayChars[1])) {
-        displayChars.shift();
-    }
-    return displayChars
-        .find(op => operatorString.includes(op));
-}
-
-let a, b, operator = null;
+let a = null, b = null, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
-let isResult = false;
+let needsClear = false;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
@@ -77,37 +57,28 @@ buttons.addEventListener("click", (event) => {
     let target = event.target;
     switch(target.innerText) {
         case "+":
-            if(displayHasOperator()) {
+            if(a === null) {
+                a = Number(display.innerText);
+            }
+            else {
+                b = Number(display.innerText);
                 populate(getResult());
-                break;
             }
             operator = "+";
-            populate("+");
+            needsClear = true;
             break;
 
         case "-":
-            if (displayHasOperator()) {
-                populate(getResult());
-                break;
-            }
             operator = "-";
             populate("-");
             break;
 
         case "/":
-            if (displayHasOperator()) {
-                populate(getResult());
-                break;
-            }
             operator = "/";
             populate("/");
             break;
 
         case "*":
-            if (displayHasOperator()) {
-                populate(getResult());
-                break;
-            }
             operator = "*";
             populate("*");
             break;
@@ -118,15 +89,14 @@ buttons.addEventListener("click", (event) => {
 
         case "C":
             clearDisplay();
-            a, b, operator = null;
+            a = null, b = null, operator = null;
             break;
 
         default:
-            // if (isResult) {
-            //     a = Number(display.innerText);
-            //     clearDisplay();
-            //     isResult = false;
-            // }
+            if (needsClear) {
+                clearDisplay();
+                needsClear = false;
+            }
             populate(target.innerText);
             break;
     }
