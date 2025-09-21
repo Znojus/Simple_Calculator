@@ -31,7 +31,21 @@ function clearDisplay() {
 
 function getSecond() {
     let displayArr = display.innerText.split(operator);
-    return displayArr[1];
+    alert(b);
+    if (displayArr[1] !== 0) {
+        return displayArr[1];
+    }
+    else return b;
+}
+
+function getResult() {
+    let displayArr = display.innerText.split(operator);
+    a = Number(displayArr[0]);
+    if (displayArr[1] !== undefined) {
+        b = Number(displayArr[1]);
+    }
+    clearDisplay();
+    return operate(a, b, operator);
 }
 
 let a, b, operator = null;
@@ -68,9 +82,11 @@ buttons.addEventListener("click", (event) => {
             break;
 
         case "=":
-            b = Number(getSecond());
+            populate(getResult());
+            break;
+
+        case "C":
             clearDisplay();
-            populate(operate(a, b, operator));
             break;
 
         default:
