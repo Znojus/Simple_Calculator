@@ -51,19 +51,25 @@ function getResult() {
         b = Number(displayArr[1]);
     }
     clearDisplay();
+    isResult = true;
     return operate(a, b, operator);
 }
 
 function displayHasOperator() {
     const operatorString = "/*-+";
-    return display.innerText
-        .split('')
+    let displayChars = display.innerText.split('');
+
+    if(displayChars[0] === "-" && !isNaN(displayChars[1])) {
+        displayChars.shift();
+    }
+    return displayChars
         .find(op => operatorString.includes(op));
 }
 
 let a, b, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
+let isResult = false;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
@@ -116,6 +122,11 @@ buttons.addEventListener("click", (event) => {
             break;
 
         default:
+            // if (isResult) {
+            //     a = Number(display.innerText);
+            //     clearDisplay();
+            //     isResult = false;
+            // }
             populate(target.innerText);
             break;
     }
