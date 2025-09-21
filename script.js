@@ -14,8 +14,11 @@ function divide(a, b) {
     return a / b;
 }
 
-let a = 4, b = 2;
-let operator = null;
+function populate(text) {
+    display.innerText += text;
+}
+
+let a, b, operator = null;
 
 function operate(a, b, oper) {
     return oper === "+" ? add(a, b) :
@@ -24,31 +27,34 @@ function operate(a, b, oper) {
     divide(a, b);
 }
 
+function getSecond() {
+    let displayArr = display.innerText.split(operator);
+    return displayArr[1];
+}
+
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
 
 buttons.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") return;
+
     let target = event.target;
 
     switch(target.innerText) {
         case "+":
             a = Number(display.innerText);
             operator = "+";
+            populate("+");
+            break;
+
+        case "=":
+            b = Number(getSecond());
+            display.innerText = "";
+            populate(operate(a, b, operator));
+            break;
+
+        default:
+            populate(target.innerText);
             break;
     }
-    // switch (target.innerText) {
-    //     case "-":
-    //         operate(a, b, "-");
-    //         break;
-    // }
-    // switch (target.innerText) {
-    //     case "/":
-    //         operate(a, b, "/");
-    //         break;
-    // }
-    // switch (target.innerText) {
-    //     case "*":
-    //         operate(a, b, "*");
-    //         break;
-    // }
 })
