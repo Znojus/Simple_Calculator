@@ -74,10 +74,14 @@ buttons.addEventListener("click", (event) => {
                 b = Number(display.innerText);
                 lastB = b;
             }
-            else {
+            else if (lastB != null){
                 b = lastB;
             }
-            let result = display.innerText = operate(a, b, operator);
+            else {
+                break;
+            }
+            let result = operate(a, b, operator);
+            display.innerText = result;
             a = result;
             hasNewOperand = false;
             break;
