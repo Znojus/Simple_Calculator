@@ -72,6 +72,14 @@ buttons.addEventListener("click", (event) => {
             break;
 
         case "=":
+            if (operator === null) {
+                if (display.innerText !== "") {
+                    a = Number(display.innerText); //no operator
+                    display.innerText = a;
+                }
+                break;
+            }
+
             if(hasNewOperand) {
                 b = Number(display.innerText);
                 lastB = b;
