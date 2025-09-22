@@ -29,18 +29,22 @@ function clearDisplay() {
     display.innerText = "";
 }
 
-function selectPhase(opSymbol) {
+function applyOperator(opSymbol) {
+    let result = null;
+
     if (operator === null) {
         a = Number(display.innerText);
-        hasNewOperand = false;
     }
     else if (hasNewOperand) {
         b = Number(display.innerText);
-        clearDisplay();
-        display.innerText = (operate(a, b, operator));
-        hasNewOperand = false;
+        result = (operate(a, b, operator));
+        a = result;
+        lastB = b;
     }
+
     operator = opSymbol;
+    hasNewOperand = false;
+    return result;
 }
 
 let a = null, b = null, operator = null;
@@ -56,19 +60,13 @@ buttons.addEventListener("click", (event) => {
     let target = event.target;
     switch(target.innerText) {
         case "+":
-            selectPhase("+");
-            break;
-
         case "-":
-            selectPhase("-");
-            break;
-
         case "/":
-            selectPhase("/");
-            break;
-
         case "*":
-            selectPhase("*");
+            let operation = applyOperator(target.innerText);
+            if (operation !== null) {
+                display.innerText = operation;
+            }
             break;
 
         case "=":
