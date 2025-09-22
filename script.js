@@ -43,6 +43,7 @@ function applyOperator(opSymbol) {
     }
 
     operator = opSymbol;
+    decimalIsThere = false;
     hasNewOperand = false;
     return result;
 }
@@ -52,6 +53,7 @@ let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
 let hasNewOperand = false;
 let lastB = null;
+let decimalIsThere = false;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
@@ -89,11 +91,28 @@ buttons.addEventListener("click", (event) => {
         case "C":
             clearDisplay();
             a = null, b = null, operator = null;
+            decimalIsThere = false;
+            hasNewOperand = false;
+            break;
+
+        case ".":
+            if (!decimalIsThere){
+                if(!hasNewOperand){
+                    clearDisplay();
+                    hasNewOperand = true;
+                }
+                if(display.innerText === "") {
+                    populate("0");
+                }
+                populate(target.innerText);
+                decimalIsThere = true;
+            }
             break;
 
         default:
             if(!hasNewOperand) {
                 clearDisplay();
+                decimalIsThere = false;
             }
             populate(target.innerText);
             hasNewOperand = true;
