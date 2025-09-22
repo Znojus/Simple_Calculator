@@ -59,30 +59,35 @@ function checkWhich(isEquals = false) {
     }
 }
 
+
+function save() {
+    a = Number(display.innerText);
+    clearDisplay();
+    needSave = false;
+}
+
 let a = null, b = null, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
-let needsClear = false;
+let needSave = true;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
 
-    if (needsClear) {
-        clearDisplay();
-        needsClear = false;
-    }
 
     let target = event.target;
     switch(target.innerText) {
         case "+":
-            checkWhich();
             if (operator === null) {
-                operator = "+";
+                a = Number(display.innerText);
             }
             else {
-                needsClear = false;
-                document.querySelector(".equals-button").click();
+                b = Number(display.innerText);
+                clearDisplay();
+                populate(operate(a, b, operator));
             }
+            needSave = true;
+            operator = "+";
             break;
 
         case "-":
@@ -111,6 +116,7 @@ buttons.addEventListener("click", (event) => {
             break;
 
         default:
+            if(needSave) save();
             populate(target.innerText);
             break;
     }
