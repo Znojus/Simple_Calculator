@@ -29,37 +29,6 @@ function clearDisplay() {
     display.innerText = "";
 }
 
-function getResult() {
-    if (operator === null) {
-        let text = display.innerText;
-        clearDisplay();
-        return Number(text);
-    }
-
-    if (b === null) {
-        b = Number(display.innerText);
-    }
-
-    clearDisplay();
-    let result = operate(a, b, operator);
-    a = null;
-    return result;
-}
-
-function checkWhich(isEquals = false) {
-    if (a === null) {
-        a = Number(display.innerText);
-    }
-    else {
-        b = Number(display.innerText);
-    }
-
-    if(!isEquals){
-        needsClear = true;
-    }
-}
-
-
 function save() {
     a = Number(display.innerText);
     clearDisplay();
@@ -70,6 +39,7 @@ let a = null, b = null, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
 let needSave = true;
+let hasNewOperand = false;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
@@ -81,10 +51,11 @@ buttons.addEventListener("click", (event) => {
             if (operator === null) {
                 a = Number(display.innerText);
             }
-            else {
+            else if (hasNewOperand){
                 b = Number(display.innerText);
                 clearDisplay();
                 populate(operate(a, b, operator));
+                hasNewOperand = false;
             }
             needSave = true;
             operator = "+";
@@ -106,8 +77,12 @@ buttons.addEventListener("click", (event) => {
             break;
 
         case "=":
-            checkWhich(true);
-            populate(getResult());
+            if(a !== null && operator !== null) {
+                b = Number(display.innerText);
+                clearDisplay();
+                populate(operate(a, b, operator));   
+                hasNewOperand = false;
+            }
             break;
 
         case "C":
@@ -116,6 +91,7 @@ buttons.addEventListener("click", (event) => {
             break;
 
         default:
+            hasNewOperand = true;
             if(needSave) save();
             populate(target.innerText);
             break;
