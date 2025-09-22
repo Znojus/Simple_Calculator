@@ -76,7 +76,13 @@ buttons.addEventListener("click", (event) => {
     switch(target.innerText) {
         case "+":
             checkWhich();
-            operator = "+";
+            if (operator === null) {
+                operator = "+";
+            }
+            else {
+                needsClear = false;
+                document.querySelector(".equals-button").click();
+            }
             break;
 
         case "-":
