@@ -29,17 +29,11 @@ function clearDisplay() {
     display.innerText = "";
 }
 
-function save() {
-    a = Number(display.innerText);
-    clearDisplay();
-    needSave = false;
-}
-
 let a = null, b = null, operator = null;
 let buttons = document.querySelector(".button-container");
 let display = document.querySelector(".display-div");
-let needSave = true;
 let hasNewOperand = false;
+let lastB = null;
 
 buttons.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
@@ -50,14 +44,14 @@ buttons.addEventListener("click", (event) => {
         case "+":
             if (operator === null) {
                 a = Number(display.innerText);
+                hasNewOperand = false;
             }
             else if (hasNewOperand){
                 b = Number(display.innerText);
                 clearDisplay();
-                populate(operate(a, b, operator));
+                display.innerText =(operate(a, b, operator));
                 hasNewOperand = false;
             }
-            needSave = true;
             operator = "+";
             break;
 
@@ -77,12 +71,16 @@ buttons.addEventListener("click", (event) => {
             break;
 
         case "=":
-            if(a !== null && operator !== null) {
+            if(hasNewOperand) {
                 b = Number(display.innerText);
-                clearDisplay();
-                populate(operate(a, b, operator));   
-                hasNewOperand = false;
+                lastB = b;
             }
+            else {
+                b = lastB;
+            }
+            let result = display.innerText = operate(a, b, operator);
+            a = result;
+            hasNewOperand = false;
             break;
 
         case "C":
@@ -91,9 +89,11 @@ buttons.addEventListener("click", (event) => {
             break;
 
         default:
-            hasNewOperand = true;
-            if(needSave) save();
+            if(!hasNewOperand) {
+                clearDisplay();
+            }
             populate(target.innerText);
+            hasNewOperand = true;
             break;
     }
 })
